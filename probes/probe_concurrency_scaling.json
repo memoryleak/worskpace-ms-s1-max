@@ -1,0 +1,300 @@
+{
+  "url": "http://ms-s1-max-01:9931",
+  "model": "qwen3.8-flash-next",
+  "started_at": "2026-10-06T17:36:07+0200",
+  "ks": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "canary_floor": 26.0,
+  "samples": [
+    {
+      "pass": 0,
+      "k": 1,
+      "clean": false,
+      "canary_before": 19.444244410830112,
+      "canary_after": 19.51454098073219,
+      "sample": {
+        "k": 1,
+        "per_stream_tok_s": [
+          0.0
+        ],
+        "per_stream_server_pps": [
+          19.35195269954878
+        ],
+        "ttft_s": [
+          0.663
+        ],
+        "completion_tokens": [
+          0
+        ],
+        "total_tokens": 0,
+        "aggregate_tok_s_wall": 0.0,
+        "aggregate_tok_s_decode_window": 0.0,
+        "median_stream_tok_s": 0.0
+      }
+    },
+    {
+      "pass": 0,
+      "k": 2,
+      "clean": false,
+      "canary_before": 19.34196684864639,
+      "canary_after": 19.407151506072978,
+      "sample": {
+        "k": 2,
+        "per_stream_tok_s": [
+          0.0,
+          0.0
+        ],
+        "per_stream_server_pps": [
+          19.44902001372573,
+          19.40806948517999
+        ],
+        "ttft_s": [
+          12.811,
+          0.993
+        ],
+        "completion_tokens": [
+          0,
+          0
+        ],
+        "total_tokens": 0,
+        "aggregate_tok_s_wall": 0.0,
+        "aggregate_tok_s_decode_window": 0.0,
+        "median_stream_tok_s": 0.0
+      }
+    },
+    {
+      "pass": 0,
+      "k": 3,
+      "clean": false,
+      "canary_before": 18.407434975735946,
+      "canary_after": 19.418779345288534,
+      "sample": {
+        "k": 3,
+        "per_stream_tok_s": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "per_stream_server_pps": [
+          15.742462801509694,
+          18.976578801292426,
+          17.172098773912147
+        ],
+        "ttft_s": [
+          14.138,
+          8.458,
+          0.99
+        ],
+        "completion_tokens": [
+          0,
+          0,
+          0
+        ],
+        "total_tokens": 0,
+        "aggregate_tok_s_wall": 0.0,
+        "aggregate_tok_s_decode_window": 0.0,
+        "median_stream_tok_s": 0.0
+      }
+    },
+    {
+      "pass": 0,
+      "k": 4,
+      "clean": false,
+      "canary_before": 19.470119237358364,
+      "canary_after": 19.445960165292618,
+      "sample": {
+        "k": 4,
+        "per_stream_tok_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "per_stream_server_pps": [
+          19.47803181437964,
+          19.35228580155855,
+          19.493922108556657,
+          12.844659655246753
+        ],
+        "ttft_s": [
+          12.129,
+          23.292,
+          0.99,
+          34.519
+        ],
+        "completion_tokens": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "total_tokens": 0,
+        "aggregate_tok_s_wall": 0.0,
+        "aggregate_tok_s_decode_window": 0.0,
+        "median_stream_tok_s": 0.0
+      }
+    },
+    {
+      "pass": 1,
+      "k": 1,
+      "clean": false,
+      "canary_before": 19.373586713886294,
+      "canary_after": 19.394248426093394,
+      "sample": {
+        "k": 1,
+        "per_stream_tok_s": [
+          0.0
+        ],
+        "per_stream_server_pps": [
+          19.48088817187038
+        ],
+        "ttft_s": [
+          0.667
+        ],
+        "completion_tokens": [
+          0
+        ],
+        "total_tokens": 0,
+        "aggregate_tok_s_wall": 0.0,
+        "aggregate_tok_s_decode_window": 0.0,
+        "median_stream_tok_s": 0.0
+      }
+    },
+    {
+      "pass": 1,
+      "k": 2,
+      "clean": false,
+      "canary_before": 12.379687632486764,
+      "canary_after": 19.338290349367107,
+      "sample": {
+        "k": 2,
+        "per_stream_tok_s": [
+          0.0,
+          0.0
+        ],
+        "per_stream_server_pps": [
+          19.36447920060316,
+          19.475084809590435
+        ],
+        "ttft_s": [
+          0.673,
+          11.891
+        ],
+        "completion_tokens": [
+          0,
+          0
+        ],
+        "total_tokens": 0,
+        "aggregate_tok_s_wall": 0.0,
+        "aggregate_tok_s_decode_window": 0.0,
+        "median_stream_tok_s": 0.0
+      }
+    },
+    {
+      "pass": 1,
+      "k": 3,
+      "clean": false,
+      "canary_before": 19.306914747261814,
+      "canary_after": 19.335500075301567,
+      "sample": {
+        "k": 3,
+        "per_stream_tok_s": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "per_stream_server_pps": [
+          19.358488862740337,
+          19.271097372787757,
+          19.369402340057405
+        ],
+        "ttft_s": [
+          23.47,
+          0.995,
+          12.264
+        ],
+        "completion_tokens": [
+          0,
+          0,
+          0
+        ],
+        "total_tokens": 0,
+        "aggregate_tok_s_wall": 0.0,
+        "aggregate_tok_s_decode_window": 0.0,
+        "median_stream_tok_s": 0.0
+      }
+    },
+    {
+      "pass": 1,
+      "k": 4,
+      "clean": false,
+      "canary_before": 19.388698688028143,
+      "canary_after": 19.279252414532603,
+      "sample": {
+        "k": 4,
+        "per_stream_tok_s": [
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "per_stream_server_pps": [
+          19.283323181325834,
+          19.343749213248895,
+          19.425284887909275,
+          19.335377960486845
+        ],
+        "ttft_s": [
+          23.408,
+          0.992,
+          12.23,
+          34.677
+        ],
+        "completion_tokens": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "total_tokens": 0,
+        "aggregate_tok_s_wall": 0.0,
+        "aggregate_tok_s_decode_window": 0.0,
+        "median_stream_tok_s": 0.0
+      }
+    }
+  ],
+  "summary": {
+    "1": {
+      "n": 0,
+      "aggregate": null,
+      "per_stream": null,
+      "aggregate_scaling": null,
+      "per_stream_retention": null
+    },
+    "2": {
+      "n": 0,
+      "aggregate": null,
+      "per_stream": null,
+      "aggregate_scaling": null,
+      "per_stream_retention": null
+    },
+    "3": {
+      "n": 0,
+      "aggregate": null,
+      "per_stream": null,
+      "aggregate_scaling": null,
+      "per_stream_retention": null
+    },
+    "4": {
+      "n": 0,
+      "aggregate": null,
+      "per_stream": null,
+      "aggregate_scaling": null,
+      "per_stream_retention": null
+    }
+  }
+}

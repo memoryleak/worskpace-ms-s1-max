@@ -1,0 +1,75 @@
+probe_cold_and_decode  salt=1791139808  2026-10-04 20:50:08
+  prefill  12000 ->  11960 tok  wall   22.44s  533 tok/s (server 548.8647494459954)
+  prefill  49000 ->  49010 tok  wall  113.73s  431 tok/s (server 433.65200045455157)
+  prefill 122000 -> 122300 tok  wall  420.37s  291 tok/s (server 291.56310147033173)
+  decode ctx      0 tok -> 0 tok in  6.97s =  0.00 tok/s (server 28.566072176559576)
+  decode ctx      0 tok -> 0 tok in  7.27s =  0.00 tok/s (server 27.385587419473985)
+  decode ctx      0 tok -> 0 tok in  7.63s =  0.00 tok/s (server 26.06574855852481)
+  decode ctx      0 tok -> 0 tok in  8.19s =  0.00 tok/s (server 24.290717162063025)
+{
+  "url": "http://ms-s1-max-01:9931",
+  "model": "qwen3.8-flash-next",
+  "started_at": "2026-10-04T20:50:08+0200",
+  "salt": 1791139808,
+  "cold_prefill": [
+    {
+      "target": 12000,
+      "prompt_tokens": 11960,
+      "wall_s": 22.441,
+      "server_prompt_ms": 21790.432,
+      "server_pps": 548.8647494459954
+    },
+    {
+      "target": 49000,
+      "prompt_tokens": 49010,
+      "wall_s": 113.728,
+      "server_prompt_ms": 113016.889,
+      "server_pps": 433.65200045455157
+    },
+    {
+      "target": 122000,
+      "prompt_tokens": 122300,
+      "wall_s": 420.366,
+      "server_prompt_ms": 419463.229,
+      "server_pps": 291.56310147033173
+    }
+  ],
+  "decode_vs_ctx": [
+    {
+      "target": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "ttft_s": 1.683,
+      "decode_wall_s": 6.966,
+      "decode_tok_s": 0.0,
+      "server_pps": 28.566072176559576
+    },
+    {
+      "target": 13000,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "ttft_s": 23.853,
+      "decode_wall_s": 7.267,
+      "decode_tok_s": 0.0,
+      "server_pps": 27.385587419473985
+    },
+    {
+      "target": 40000,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "ttft_s": 88.594,
+      "decode_wall_s": 7.635,
+      "decode_tok_s": 0.0,
+      "server_pps": 26.06574855852481
+    },
+    {
+      "target": 80000,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "ttft_s": 226.322,
+      "decode_wall_s": 8.194,
+      "decode_tok_s": 0.0,
+      "server_pps": 24.290717162063025
+    }
+  ]
+}

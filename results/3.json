@@ -1,0 +1,116 @@
+{
+  "url": "http://ms-s1-max-01:9931",
+  "model": "qwen3.8-flash-next",
+  "started_at": "2026-10-05T17:24:16+0200",
+  "ladder_targets": [
+    12000,
+    49000,
+    122000
+  ],
+  "decode_tokens": 200,
+  "health": {
+    "status": "ok"
+  },
+  "props": {
+    "max_instances": 1,
+    "models_autoload": true,
+    "default_generation_settings": {
+      "params": null,
+      "n_ctx": 0
+    },
+    "build_info": "b11399-2ca15f540"
+  },
+  "model_status": {
+    "value": "loaded",
+    "args": [
+      "/usr/bin/llama-server",
+      "--host",
+      "127.0.0.1",
+      "--jinja",
+      "--port",
+      "58153",
+      "--alias",
+      "qwen3.8-flash-next",
+      "--batch-size",
+      "4096",
+      "--ctx-size",
+      "262144",
+      "--cache-ram",
+      "32768",
+      "--cache-type-k",
+      "q8_0",
+      "--cache-type-v",
+      "q8_0",
+      "--swa-checkpoints",
+      "8",
+      "--flash-attn",
+      "on",
+      "--kv-unified",
+      "--load-mode",
+      "dio",
+      "--model",
+      "/srv/models/Qwen3.8-Flash-Next/UD-IQ4_XS/Qwen3.8-Flash-Next-UD-IQ4_XS-00001-of-00003.gguf",
+      "--mmproj",
+      "/srv/models/Qwen3.8-Flash-Next/mmproj-F16.gguf",
+      "--n-gpu-layers",
+      "99",
+      "--parallel",
+      "2",
+      "--ubatch-size",
+      "2048"
+    ]
+  },
+  "idle_ttft_s": 0.7460072959947865,
+  "decode": {
+    "wall_s": 8.318291960007627,
+    "ttft_s": 0.7993300490052206,
+    "completion_tokens": 200,
+    "decode_wall_s": 7.518961911002407,
+    "server_pps": 28.553251239627205
+  },
+  "prefill_ladder": [
+    {
+      "target": 12000,
+      "prompt_tokens": 11941,
+      "wall_s": 22.38821045900113,
+      "server_prompt_ms": 21811.828,
+      "server_pps": 547.455261429716
+    },
+    {
+      "target": 49000,
+      "prompt_tokens": 48992,
+      "wall_s": 114.38491412599979,
+      "server_prompt_ms": 113701.186,
+      "server_pps": 430.8838080193816
+    },
+    {
+      "target": 122000,
+      "prompt_tokens": 122259,
+      "wall_s": 432.30460504599614,
+      "server_prompt_ms": 431420.245,
+      "server_pps": 283.3872573597004
+    }
+  ],
+  "cache_reuse": [
+    {
+      "label": "cold first pass",
+      "prompt_tokens": 13445,
+      "wall_s": 25.887105750996852
+    },
+    {
+      "label": "same prefix + suffix A",
+      "prompt_tokens": 13455,
+      "wall_s": 5.315296465007123
+    },
+    {
+      "label": "same prefix + suffix B",
+      "prompt_tokens": 13453,
+      "wall_s": 5.0891964430047665
+    },
+    {
+      "label": "control new prefix",
+      "prompt_tokens": 13420,
+      "wall_s": 25.60372390600969
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "probe": "probes/probe_cold_and_decode.py",
+  "note": "Fresh salted seeds => genuinely cold prefill (unlike benchmark.py's fixed 4000+rung seeds, which collide with cached text on a rerun). Streamed decode responses from this router carry timings.predicted_per_second but no usage.prompt_tokens/completion_tokens, so decode-vs-ctx rates are server-reported (pred_pps).",
+  "url": "http://ms-s1-max-01:9931",
+  "model": "qwen3.8-flash-next",
+  "started_at": "2026-10-04T20:50:08+0200",
+  "config_state": "Fix #2: b11391, cache-ram 32768, cache-type-k/v q8_0, parallel 2, batch 4096, ubatch 2048, swa-checkpoints 8, flash-attn on, load-mode dio, n-gpu-layers 99",
+  "cold_prefill": [
+    {"target": 12000, "prompt_tokens": 11960, "wall_s": 22.441, "server_prompt_ms": 21790.4, "server_pps": 548.9},
+    {"target": 49000, "prompt_tokens": 49010, "wall_s": 113.728, "server_prompt_ms": 113016.9, "server_pps": 433.7},
+    {"target": 122000, "prompt_tokens": 122300, "wall_s": 420.366, "server_prompt_ms": 419463.2, "server_pps": 291.6}
+  ],
+  "decode_vs_ctx": [
+    {"target_tokens": 0, "ttft_s": 1.683, "decode_wall_s": 6.966, "server_pps": 28.57},
+    {"target_tokens": 13000, "ttft_s": 23.853, "decode_wall_s": 7.267, "server_pps": 27.39},
+    {"target_tokens": 40000, "ttft_s": 88.594, "decode_wall_s": 7.635, "server_pps": 26.07},
+    {"target_tokens": 80000, "ttft_s": 226.322, "decode_wall_s": 8.194, "server_pps": 24.29}
+  ]
+}

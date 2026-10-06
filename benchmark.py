@@ -26,7 +26,7 @@ Design notes:
 
 Usage:
   benchmark.py [--url URL] [--model NAME] [--ladder N N N] [--decode-tokens N]
-               [--prefix-paras N] [--timeout S] [--json PATH]
+               [--prefix-paras N] [--timeout S] [--json PATH] [--salt N]
                [--skip-introspection] [--skip-decode] [--skip-prefill] [--skip-cache]
 """
 import argparse
@@ -258,12 +258,14 @@ def run_decode(url, model, decode_tokens, timeout, results):
         print(f"  decode rate       : {pred_pps:.0f} tok/s (server-reported)")
 
 
-def run_prefill_ladder(url, model, ladder, timeout, results):
+def run_prefill_ladder(url, model, ladder, timeout, results, salt=0):
     section("D. Cold prefill ladder")
     results["prefill_ladder"] = []
     for rung in ladder:
         n_paras = max(1, round(rung / TOKENS_PER_PARA))
-        seed = 4000 + rung
+        # Fixed seed per rung keeps rung text reproducible; --salt shifts it so a
+        # rerun is genuinely cold instead of a prefix-cache hit (perf doc §4.1).
+        seed = 4000 + rung + salt
         text = make_prefix(seed, n_paras)
         wall, obj, _, _ = chat_once(
             url, model, [{"role": "user", "content": READY_PROMPT + text}],
@@ -316,6 +318,9 @@ def main(argv=None):
                     help="prefill prompt-token targets, approximate (default: %(default)s)")
     ap.add_argument("--decode-tokens", type=int, default=DEFAULT_DECODE_TOKENS)
     ap.add_argument("--prefix-paras", type=int, default=DEFAULT_PREFIX_PARAS)
+    ap.add_argument("--salt", type=int, default=0,
+                    help="shift the per-rung ladder seeds so a rerun is "
+                         "genuinely cold instead of a prefix-cache hit")
     ap.add_argument("--timeout", type=int, default=1800,
                     help="per-request HTTP timeout, seconds (default %(default)s)")
     ap.add_argument("--json", metavar="PATH",
@@ -347,7 +352,7 @@ def main(argv=None):
                        args.timeout, results)
         if not args.skip_prefill:
             run_prefill_ladder(args.url, args.model, args.ladder,
-                               args.timeout, results)
+                               args.timeout, results, salt=args.salt)
         if not args.skip_cache:
             run_cache_reuse(args.url, args.model, args.prefix_paras,
                             args.timeout, results)

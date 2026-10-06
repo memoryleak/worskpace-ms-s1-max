@@ -27,11 +27,18 @@ Single prefill rung at ~12k tokens:
 
 Options: `--url`, `--model`, `--ladder N N N`, `--decode-tokens N`,
 `--prefix-paras N`, `--timeout S`, `--json PATH` (also dump raw results),
+`--salt N` (shift ladder seeds; use a new value per run so rungs stay cold —
+a rerun without salt re-sends text already in the prefix cache and reports
+cache-hit walls, not cold prefill),
 and `--skip-introspection/--skip-decode/--skip-prefill/--skip-cache`.
 
 Notes on methodology:
 - Ladder rungs use a distinct random seed each, so later rungs are genuinely
-  cold rather than prefix-cache hits from a shared word stream.
+  cold rather than prefix-cache hits from a shared word stream; `--salt` shifts
+  those seeds between runs for the same reason.
+- The box serves a production Hermes client: gate long measurement runs on
+  `probes/probe_wait_quiet.py` (exit 0 = idle) and treat a uniform ~19-20 tok/s
+  short-context decode as contention, not a regression (see perf doc §4.4).
 - Reported token counts are the server's `usage.prompt_tokens` / timings,
   never assumed.
 - Decode rate = tokens / (wall time - TTFT). Idle TTFT is measured directly

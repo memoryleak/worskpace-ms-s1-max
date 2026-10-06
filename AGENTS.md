@@ -53,8 +53,7 @@ Priority order:
 All work happens **inside `/home/hermes/Projects/strix-halo` only**:
 
 - Every file you create or edit — notes, probe scripts, captured output,
-  config dumps, results — goes in this directory (e.g. `./probes/`,
-  `./notes/`). Do not write anywhere else on the machine.
+  config dumps, results — goes in this directory. Do not write anywhere else on the machine.
 - The inference box `ms-s1-max-01` is **read-only from here**: you may send
   HTTP requests to `http://ms-s1-max-01:9931/v1` to probe/measure, but never
   modify the server — no preset edits, no model-draft load, no container
@@ -63,14 +62,8 @@ All work happens **inside `/home/hermes/Projects/strix-halo` only**:
   *proposed* patch/recipe with a note that the operator must apply it.
 - External lookups (web search, upstream threads/PRs, huggingface) are allowed
   for research; save what you find into this directory, never elsewhere.
-- If existing probe scripts are referenced outside this directory
-  (`/home/hermes/strix-perf-probes/`), copy or re-create them under `./probes/`
-  rather than editing the originals.
 
 ## Rules
-
-- When you test, log actual numbers with the probe used and the config state.
-  Keep probe scripts and captured output under `./probes/`.
 - Always state provenance: never claim something measured that you only read.
 - Record results back into `strix-halo-qwen3.8-perf.md` under the same
   conventions; do not replace the document with a summary.

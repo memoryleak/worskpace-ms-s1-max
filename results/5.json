@@ -1,0 +1,19 @@
+{
+  "url": "http://ms-s1-max-01:9931",
+  "model": "qwen3.8-flash-next",
+  "started_at": "2026-10-06T17:05:33+0200",
+  "ladder_targets": [
+    12000,
+    49000,
+    122000
+  ],
+  "decode_tokens": 200,
+  "idle_ttft_s": 0.5694961050003258,
+  "decode": {
+    "wall_s": 8.33477192600003,
+    "ttft_s": 0.7973668839999846,
+    "completion_tokens": 200,
+    "decode_wall_s": 7.537405042000046,
+    "server_pps": 28.512634822495237
+  }
+}
