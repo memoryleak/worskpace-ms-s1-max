@@ -75,7 +75,9 @@ run collides with text already in the prefix cache and returns cache-hit wall ti
 (The `results/1.json` written earlier this session shows exactly that: its ladder
 walls are <2 s with server prompt-eval ~570–630 ms, i.e. ~20k tok/s cache hits.)
 To get genuinely cold numbers under Fix #2 — the only config state the doc had never
-measured on the full ladder, since M6 was Fix #1 — `probes/probe_cold_and_decode.py`
+measured on the full ladder, since M6 was Fix #1 — the cold probe
+(`probes/probe_cold_and_decode.py` at the time; now merged into
+`benchmark.py cold`)
 salts the seed with the wall clock. Raw output: `probes/probe_cold_and_decode.out`,
 `results/2.json`.
 
@@ -208,7 +210,8 @@ Not isolated: the b11403→b11430 range includes ggml-org/llama.cpp#29639
 ("vulkan: sparse flash attention for quantized K/V", merged 2026-10-05;
 Reported-by-source: +15.6% decode @64k on RDNA3/4 discrete, ~0 below 32k — not
 our box). Whether the quantized-KV sparse path activates on gfx1151/RADV is
-what `probes/probe_decode_sparse_fa.py` was built to discriminate; it has not
+what the sparse-FA probe (`benchmark.py sparse-fa`, then
+`probes/probe_decode_sparse_fa.py`) was built to discriminate; it has not
 produced a valid answer yet (contention block below).
 
 **Discarded contention runs (2026-10-06 16:54–17:36; no usable numbers).**
@@ -223,8 +226,9 @@ direct confirmation of the production-sharing caveat noted in §4.1. The
 concurrency probe additionally exposed a harness fragility: it recorded 0
 completion tokens although the server had streamed usage chunks (not
 reproducible against b11430 the same evening — the corrected read path returns
-correct counts). Hardened 2026-10-06; a clean re-run gated on
-`probes/probe_wait_quiet.py` is still outstanding.
+correct counts). Hardened 2026-10-06 (same day, all probe scripts were merged
+into `benchmark.py` as modes, and the corrected path was live-verified); a
+clean re-run gated on `benchmark.py quiet` is still outstanding.
 
 ## 5. Hermes timeout history (from `~/.hermes/logs/errors.log`)
 
@@ -351,15 +355,17 @@ one-line `qwen4exp.cpp` guard in a local rebuild — see Recipe A.
 
 ## 8. Resources
 
-- Benchmark: `./benchmark.py` — self-contained harness covering server introspection (§A), idle TTFT (§B), decode throughput (§C), cold-prefill ladder (§D), and prefix-cache reuse (§E); raw results are written to `results/N.json`. Use `--salt N` (new value per run) so §D stays genuinely cold — an unsalted rerun returns prefix-cache hits (see §4.1). See `./README.md` for usage.
-- Contention gate: `./probes/probe_wait_quiet.py` — blocks until the box decodes the standard prompt at ≥26 tok/s twice in a row (exit 0); run before any long measurement (see §4.4).
-- Server introspection (benchmark.py §A): `GET :9931/v1/models` (per-model presets + loaded state), `GET :9931/props`, `GET :9931/health`
-- Decode request shape (benchmark.py §C): POST `/v1/chat/completions` `{"model":"qwen3.8-flash-next","messages":[{"role":"user","content":"Count from 1 to 80 separated by spaces."}],"max_tokens":200,"temperature":0,"stream":true,"chat_template_kwargs":{"enable_thinking":false}}`
-- Cold prefill + decode-vs-context probe (salted seeds): `./probes/probe_cold_and_decode.py` (output `probes/probe_cold_and_decode.out`, `results/2.json`)
+Single harness (2026-10-06): `./benchmark.py` is one stdlib-only script with all measurement modes — the former standalone probe scripts under `probes/` were merged in as subcommands; `probes/` and `results/` now hold recorded raw output only. Mode list and flags: `./benchmark.py --help` / `./README.md`.
+
+- `./benchmark.py` (= `bench` mode): server introspection (§A), idle TTFT (§B), decode throughput (§C), cold-prefill ladder (§D), prefix-cache reuse (§E); raw results written to `results/N.json`. Use `--salt N` (new value per run) so §D stays genuinely cold — an unsalted rerun returns prefix-cache hits (see §4.1).
+- `./benchmark.py cold`: genuinely-cold prefill ladder (clock-salted seeds) + decode rate vs context length (was `probes/probe_cold_and_decode.py`; output of the original run: `probes/probe_cold_and_decode.out`, `results/2.json`).
+- `./benchmark.py sparse-fa`: sparse-FA (#29639) discriminator — canary-gated decode-vs-depth sweep (was `probes/probe_decode_sparse_fa.py`; predecessor `probe_decode_vs_ctx_b11430.py` superseded by it). Runs so far: CONTENDED-only, §4.4; clean re-run outstanding.
+- `./benchmark.py concurrency`: aggregate decode vs concurrent slots — the read-only answer to §9 Q1 (was `probes/probe_concurrency_scaling.py`). Run so far: CONTENDED-only, §4.4; clean re-run outstanding.
+- `./benchmark.py quiet`: contention gate — blocks until the box decodes the standard prompt at ≥26 tok/s twice in a row (exit 0); run before any long measurement (was `probes/probe_wait_quiet.py`; see §4.4).
+- `./benchmark.py gguf-peek <file|url> [keys…]`: GGUF header parser (metadata KV + tensor directory; local file or HTTP-Range URL; was `probes/gguf_peek_local.py` + `probes/gguf_header_peek.py`). MTP draft header evidence for #29811: `./probes/gguf/mtp_q80_head.bin` (4 MB GGUF prefix — metadata fully parseable, trailing tensor directory truncated at the 4 MB cut).
+- Server introspection (bench §A): `GET :9931/v1/models` (per-model presets + loaded state), `GET :9931/props`, `GET :9931/health`
+- Decode request shape (bench §C): POST `/v1/chat/completions` `{"model":"qwen3.8-flash-next","messages":[{"role":"user","content":"Count from 1 to 80 separated by spaces."}],"max_tokens":200,"temperature":0,"stream":true,"chat_template_kwargs":{"enable_thinking":false}}`
 - Fresh full benchmark under b11399 (2026-10-05): `results/3.json` — see §4.2. Under b11430 (2026-10-06): `results/4.json`, `results/5.json` — see §4.4.
-- Sparse-FA (#29639) discriminator, decode-vs-depth with canary gating: `./probes/probe_decode_sparse_fa.py` (run so far: CONTENDED-only, §4.4; clean re-run outstanding). Predecessor: `./probes/probe_decode_vs_ctx_b11430.py`.
-- Concurrency-scaling probe (aggregate decode vs slot count, §9 Q1): `./probes/probe_concurrency_scaling.py` (run so far: CONTENDED-only, §4.4; clean re-run outstanding).
-- MTP draft GGUF header evidence for #29811 (4 MB GGUF prefix, parseable with `./probes/gguf_peek_local.py`; note the trailing tensor directory is truncated at the 4 MB cut): `./probes/gguf/mtp_q80_head.bin`. Range-fetch tool for other HF files: `./probes/gguf_header_peek.py`.
 - Upstream research synthesis (provenance-tagged): `notes/upstream-research-2026-10-04.md`
 - Operator-applied recipes (read-only server → proposed patches): `notes/decode-mtp-operator-recipe.md`
 
